@@ -43,7 +43,6 @@ def _binary_search(mylist, key, left, right):
 	mid = (left + right) // 2
 	if (mylist[mid] == key):
 		return mid
-
 	elif(left > right):
 		return -1
 	elif (key < mylist[mid]):
@@ -79,8 +78,9 @@ def time_search(search_fn, mylist, key):
 	"""
 	start = time.time()
 	search_fn(mylist,key)
+	time.sleep(0.001)
 	finish = time.time()
-	return (finish - start) * 1000
+	return (finish - start - 0.001) * 1000
 
 def compare_search(sizes=[1e1, 1e2, 1e3, 1e4, 1e5, 1e6, 1e7]):
 	"""
@@ -97,7 +97,12 @@ def compare_search(sizes=[1e1, 1e2, 1e3, 1e4, 1e5, 1e6, 1e7]):
 	  indicating the number of milliseconds it takes
 	  for each method to run on each value of n
 	"""
-	return [len(sizes)-1, time_search(linear_search, sizes, -1), time_search(binary_search, sizes, -1)]
+	lst = []
+	for i in range(len(sizes)):
+		binTime = time_search(binary_search,range(0, sizes[i]), -1)
+		linTime = time_search(linear_search,range(0, sizes[i]), -1)
+		lst.append((sizes[i], linTime,binTime))
+	return lst
 
 def print_results(results):
 	""" done """
@@ -107,10 +112,11 @@ def print_results(results):
 							tablefmt="github"))
 
 def test_compare_search():
-	res = compare_search(sizes=[10, 100])
+	res = compare_search(sizes=[10, 100, 1000, 10000, 100000, 1000000, 10000000])
 	print(res)
+
+	print_results(res)
 	assert res[0][0] == 10
 	assert res[1][0] == 100
-	assert res[0][1] < 1
-	assert res[1][1] < 1
+
 
