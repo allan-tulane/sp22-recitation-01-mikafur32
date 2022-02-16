@@ -120,3 +120,4 @@ def test_compare_search():
 	assert res[1][0] == 100
 
 
+
